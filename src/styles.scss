@@ -1,0 +1,55 @@
+/* You can add global styles to this file, and also import other style files */
+@use "@covalent/tokens" as covalent-tokens;
+@use "@covalent/components" as covalent-theme;
+@use "@angular/material" as mat;
+@use "@covalent/core/theming/all-theme" as cov;
+@use "@covalent/markdown/markdown-theme" as markdown;
+@use "@covalent/highlight/highlight-theme" as highlight;
+@use "@covalent/flavored-markdown/flavored-markdown-theme" as markdown-flavored;
+
+@include mat.core();
+
+$primary: mat.define-palette($mat-orange, 800);
+$accent: mat.define-palette($mat-light-blue, 600, A100, A400);
+$warn: mat.define-palette($mat-red, 600);
+
+$theme: mat.define-light-theme($primary, $accent, $warn);
+
+@include mat.all-component-themes($theme);
+@include cov.covalent-theme($theme);
+@include markdown.covalent-markdown-theme($theme);
+@include highlight.covalent-highlight-theme();
+@include markdown-flavored.covalent-flavored-markdown-theme($theme);
+
+// Extracting theme tokens
+$theme-tokens: map-get(covalent-tokens.$tokens, "theme");
+$light-tokens: map-get($theme-tokens, "light");
+$dark-tokens: map-get($theme-tokens, "dark");
+
+// Extracting color tokens for light and dark themes
+$light-colors: map-get($light-tokens, "colors");
+$dark-colors: map-get($dark-tokens, "colors");
+
+// Merging with deprecated tokens (if any)
+$light-colors: map-merge(
+  $light-colors,
+  map-get(covalent-tokens.$tokens, "light")
+);
+$dark-colors: map-merge($dark-colors, map-get(covalent-tokens.$tokens, "dark"));
+
+:root {
+  // Apply the light theme by default
+  @include covalent-theme.components-theme(
+    $light-colors,
+    map-get(covalent-tokens.$tokens, typography)
+  );
+}
+
+// Dark theme class
+.theme-dark {
+  // Apply the dark theme when .theme-dark class is added to an element
+  @include covalent-theme.components-theme(
+    $dark-colors,
+    map-get(covalent-tokens.$tokens, typography)
+  );
+}

@@ -1,0 +1,33 @@
+<main class="notebooks-container">
+  <section class="notebooks">
+    <cv-notebook-cell
+      class="cell"
+      *ngFor="let cell of cells; let i = index"
+      [code]="cell.source"
+      [language]="'sql'"
+      [timesExecuted]="cell.execution_count"
+      [selected]="cell.selected"
+      [hideEditor]="cell.hideEditor"
+      [hideCount]="cell.hideCount"
+      (click)="selectCell(i)"
+      (dblclick)="editMdCell()"
+    >
+      <div class="output" slot="output" *ngIf="cell.outputs?.length">
+        <td-flavored-markdown>
+          <ng-container *ngFor="let output of cell.outputs">
+            <ng-container *ngFor="let data of output.data | keyvalue">
+              <ng-container [ngSwitch]="data.key">
+                <ng-container *ngSwitchCase="'text/markdown'">
+                  <td-flavored-markdown>{{ data.value }}</td-flavored-markdown>
+                </ng-container>
+                <ng-container *ngSwitchCase="'text/html'">
+                  <div [innerHTML]="trustContent(data.value)"></div>
+                </ng-container>
+              </ng-container>
+            </ng-container>
+          </ng-container>
+        </td-flavored-markdown>
+      </div>
+    </cv-notebook-cell>
+  </section>
+</main>
