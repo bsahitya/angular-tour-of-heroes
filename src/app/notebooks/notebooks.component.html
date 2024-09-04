@@ -16,6 +16,9 @@
     [selected]="cell.selected"
     [hideEditor]="cell.hideEditor"
     [hideCount]="cell.hideCount"
+    [editorTheme]="
+      (themeService.theme$ | async) === 'light-theme' ? 'cv-light' : 'cv-dark'
+    "
     (contextmenu)="selectCell(i)"
     (click)="selectCell(i)"
     (dblclick)="editMdCell(cell)"
@@ -33,6 +36,11 @@
         [language]="cell.language"
         [timesExecuted]="cell.execution_count"
         [selected]="true"
+        [editorTheme]="
+          (themeService.theme$ | async) === 'light-theme'
+            ? 'cv-light'
+            : 'cv-dark'
+        "
       ></cv-notebook-cell>
     </div>
 
@@ -41,7 +49,6 @@
       cdkDragHandle
       slot="drag-handle"
       icon="drag_indicator"
-      style="padding: 0.5rem"
     ></cv-icon-button>
 
     <!-- Display cell output, handling different types of content -->

@@ -22,6 +22,7 @@ import '@covalent/components/icon-button';
 import '@covalent/components/notebook-cell';
 import '@covalent/components/select';
 import '@covalent/components/typography';
+import { ThemeService } from '../services/theme.service';
 
 @Component({
   selector: 'app-notebooks',
@@ -42,7 +43,8 @@ export class NotebooksComponent implements OnInit {
 
   constructor(
     private _domSanitizer: DomSanitizer,
-    private _notebooksService: NotebooksService
+    private _notebooksService: NotebooksService,
+    public themeService: ThemeService
   ) {}
 
   ngOnInit(): void {

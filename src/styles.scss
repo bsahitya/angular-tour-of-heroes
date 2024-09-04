@@ -54,10 +54,23 @@ $dark-colors: map-merge($dark-colors, map-get(covalent-tokens.$tokens, "dark"));
 }
 
 // Dark theme class
-.theme-dark {
+.dark-theme {
   // Apply the dark theme when .theme-dark class is added to an element
   @include covalent-theme.components-theme(
     $dark-colors,
     map-get(covalent-tokens.$tokens, typography)
   );
+}
+
+body {
+  background-color: var(--mdc-theme-background);
+}
+
+.td-markdown {
+  h1,
+  h2,
+  h3,
+  h4 {
+    color: var(--cv-theme-on-surface);
+  }
 }

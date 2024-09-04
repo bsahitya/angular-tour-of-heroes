@@ -5,6 +5,7 @@ import {
   CUSTOM_ELEMENTS_SCHEMA,
   ElementRef,
   OnDestroy,
+  Renderer2,
   ViewChild,
 } from '@angular/core';
 import { Router, RouterOutlet } from '@angular/router';
@@ -21,6 +22,7 @@ import '@covalent/components/typography';
 import '@covalent/components/action-ribbon';
 import '@covalent/components/checkbox';
 import { CovalentFlavoredMarkdownModule } from '@covalent/flavored-markdown';
+import { ThemeService } from './services/theme.service';
 
 @Component({
   selector: 'app-root',
@@ -36,7 +38,11 @@ export class AppComponent implements AfterViewInit, OnDestroy {
   // Holds the reference to the event listener for the 'selected' event
   private selectedEventListener!: (event: CustomEvent) => void;
 
-  constructor(private _router: Router) {}
+  constructor(
+    private _renderer2: Renderer2,
+    private _router: Router,
+    private _themeService: ThemeService
+  ) {}
 
   /**
    * Sets up the event listener for the 'selected' event.
@@ -47,6 +53,21 @@ export class AppComponent implements AfterViewInit, OnDestroy {
       'selected',
       this.selectedEventListener
     );
+    this._renderer2.addClass(
+      document.querySelector('body'),
+      this._themeService.getCurrentTheme()
+    );
+  }
+
+  /**
+   * Toggles the app theme.
+   */
+  toggleTheme() {
+    const currentTheme = this._themeService.getCurrentTheme();
+    this._themeService.toggleTheme();
+    const newTheme = this._themeService.getCurrentTheme();
+    this._renderer2.removeClass(document.querySelector('body'), currentTheme);
+    this._renderer2.addClass(document.querySelector('body'), newTheme);
   }
 
   /**
