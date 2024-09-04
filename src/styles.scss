@@ -27,7 +27,7 @@ $myapp-theme: mat.define-light-theme(
 @include cov.covalent-theme($myapp-theme);
 @include markdown.covalent-markdown-theme($myapp-theme);
 @include highlight.covalent-highlight-theme($myapp-theme);
-@include markdown-flavored.covalent-flavored-markdown-theme($myapp-theme);
+// @include markdown-flavored.covalent-flavored-markdown-theme($myapp-theme);
 
 // Extracting theme tokens
 $theme-tokens: map-get(covalent-tokens.$tokens, "theme");
