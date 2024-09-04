@@ -5,6 +5,10 @@ import { NotebooksComponent } from './notebooks/notebooks.component';
 export const routes: Routes = [
   {
     path: '',
+    component: NotebooksComponent,
+  },
+  {
+    path: 'generic',
     component: GenericComponent,
   },
   {

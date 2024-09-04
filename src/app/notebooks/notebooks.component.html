@@ -1,33 +1,96 @@
-<main class="notebooks-container">
-  <section class="notebooks">
-    <cv-notebook-cell
-      class="cell"
-      *ngFor="let cell of cells; let i = index"
-      [code]="cell.source"
-      [language]="'sql'"
-      [timesExecuted]="cell.execution_count"
-      [selected]="cell.selected"
-      [hideEditor]="cell.hideEditor"
-      [hideCount]="cell.hideCount"
-      (click)="selectCell(i)"
-      (dblclick)="editMdCell()"
+<section
+  class="cells"
+  cdkDropList
+  cdkDropListAutoScroll
+  cdkDropListAutoScrollStep="10"
+  (cdkDropListDropped)="drop($event)"
+>
+  <!-- Iterate over the cells array to create a notebook cell for each item -->
+  <cv-notebook-cell
+    class="cell"
+    *ngFor="let cell of cells; let i = index"
+    [code]="cell.source"
+    [index]="i"
+    [language]="cell.language"
+    [timesExecuted]="cell.execution_count"
+    [selected]="cell.selected"
+    [hideEditor]="cell.hideEditor"
+    [hideCount]="cell.hideCount"
+    (contextmenu)="selectCell(i)"
+    (click)="selectCell(i)"
+    (dblclick)="editMdCell(cell)"
+    cdkDrag
+    (cdkDragStarted)="onDragStarted()"
+    (cdkDragEnded)="onDragEnded(i)"
+  >
+    <!-- Placeholder element shown while dragging -->
+    <div *cdkDragPlaceholder class="custom-placeholder"></div>
+
+    <!-- Drag preview shown during drag operation -->
+    <div *cdkDragPreview class="drag-preview">
+      <cv-notebook-cell
+        [code]="cell.source.slice(0, 20) + '...'"
+        [language]="cell.language"
+        [timesExecuted]="cell.execution_count"
+        [selected]="true"
+      ></cv-notebook-cell>
+    </div>
+
+    <!-- Drag handle to initiate dragging -->
+    <cv-icon-button
+      cdkDragHandle
+      slot="drag-handle"
+      icon="drag_indicator"
+      style="padding: 0.5rem"
+    ></cv-icon-button>
+
+    <!-- Display cell output, handling different types of content -->
+    <div
+      class="output"
+      slot="output"
+      *ngIf="
+        cell.outputs?.length &&
+        ((cell.hideEditor && cell.cell_type === 'markdown') ||
+          cell.cell_type !== 'markdown')
+      "
     >
-      <div class="output" slot="output" *ngIf="cell.outputs?.length">
-        <td-flavored-markdown>
-          <ng-container *ngFor="let output of cell.outputs">
-            <ng-container *ngFor="let data of output.data | keyvalue">
-              <ng-container [ngSwitch]="data.key">
-                <ng-container *ngSwitchCase="'text/markdown'">
-                  <td-flavored-markdown>{{ data.value }}</td-flavored-markdown>
-                </ng-container>
-                <ng-container *ngSwitchCase="'text/html'">
-                  <div [innerHTML]="trustContent(data.value)"></div>
-                </ng-container>
-              </ng-container>
+      <cv-typography scale="body2" *ngFor="let output of cell.outputs">
+        <ng-container *ngFor="let data of output.data | keyvalue">
+          <ng-container [ngSwitch]="data.key">
+            <ng-container *ngSwitchCase="'text/markdown'">
+              <td-flavored-markdown>{{ data.value }}</td-flavored-markdown>
             </ng-container>
+            <ng-container *ngSwitchCase="'text/html'">
+              <div [innerHTML]="trustContent(data.value)"></div>
+            </ng-container>
+            <ng-container *ngSwitchCase="'image/png'">
+              <img [src]="getImgSrc('png', data.value)" />
+            </ng-container>
+            <ng-container *ngSwitchCase="'image/jpg'"
+              ><img [src]="getImgSrc('jpg', data.value)"
+            /></ng-container>
           </ng-container>
-        </td-flavored-markdown>
-      </div>
-    </cv-notebook-cell>
-  </section>
-</main>
+        </ng-container>
+      </cv-typography>
+    </div>
+
+    <!-- Context menu with options for cut, copy, paste, and delete -->
+    <div slot="context-menu">
+      <cv-list class="context-menu">
+        <div (click)="cut()">
+          <cv-list-item>Cut</cv-list-item>
+        </div>
+        <div (click)="copy()">
+          <cv-list-item>Copy</cv-list-item>
+        </div>
+        <div (click)="paste()">
+          <cv-list-item>Paste</cv-list-item>
+        </div>
+        <li divider></li>
+        <div (click)="delete()">
+          <cv-list-item>Delete</cv-list-item>
+        </div>
+      </cv-list>
+    </div>
+  </cv-notebook-cell>
+</section>

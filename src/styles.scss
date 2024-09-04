@@ -9,17 +9,25 @@
 
 @include mat.core();
 
-$primary: mat.define-palette($mat-orange, 800);
-$accent: mat.define-palette($mat-light-blue, 600, A100, A400);
-$warn: mat.define-palette($mat-red, 600);
+$myapp-theme-primary: mat.define-palette(mat.$indigo-palette, A400, A100, A700);
+$myapp-theme-accent: mat.define-palette(mat.$indigo-palette);
+$myapp-theme-warn: mat.define-palette(mat.$red-palette);
 
-$theme: mat.define-light-theme($primary, $accent, $warn);
+$myapp-theme: mat.define-light-theme(
+  (
+    color: (
+      primary: $myapp-theme-primary,
+      accent: $myapp-theme-accent,
+      warn: $myapp-theme-warn,
+    ),
+  )
+);
 
-@include mat.all-component-themes($theme);
-@include cov.covalent-theme($theme);
-@include markdown.covalent-markdown-theme($theme);
-@include highlight.covalent-highlight-theme();
-@include markdown-flavored.covalent-flavored-markdown-theme($theme);
+@include mat.all-component-themes($myapp-theme);
+@include cov.covalent-theme($myapp-theme);
+@include markdown.covalent-markdown-theme($myapp-theme);
+@include highlight.covalent-highlight-theme($myapp-theme);
+@include markdown-flavored.covalent-flavored-markdown-theme($myapp-theme);
 
 // Extracting theme tokens
 $theme-tokens: map-get(covalent-tokens.$tokens, "theme");

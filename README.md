@@ -1,27 +1,39 @@
-# AngularTourOfHeroes
+# Notebook Demo App
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 17.3.3.
+This Angular application demonstrates notebook functionality similar to Jupyter Notebook, leveraging Covalent components and color tokens. The main component utilized in this app is the Covalent `notebook-cell` component.
 
-## Development server
+You can explore the `notebook-cell` component in more detail using the following [Storybook link](https://teradata.github.io/covalent/docs/components/?path=/docs/components-notebook-cell--overview).
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+## Features
 
-## Code scaffolding
+- **Notebook Loading**: The app loads a Python notebook file, enabling users to interact with the content.
+- **Drag and Drop**: Users can drag and drop cells within the notebook using the Angular CDK drag-and-drop library.
+- **Cell Actions**: Supports cut, copy, paste, and delete actions on the cells.
+- **Markdown Cells**: Includes markdown cells that can be edited by double-clicking on them to open the cell editor.
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+## Getting Started
 
-## Build
+To run the application locally:
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+1. Install the necessary dependencies:
 
-## Running unit tests
+   ```bash
+   npm ci
+   ```
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+2. Start the development server:
+   ```bash
+   ng serve
+   ```
 
-## Running end-to-end tests
+The application will be accessible at http://localhost:4200.
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+## Technologies Used
 
-## Further help
+- **Angular**: Framework for building the application.
+- **Covalent Components**: Used for notebook cells, icons, typography, and more.
+- **Angular CDK**: Provides drag-and-drop functionality.
+- **Color Tokens**: Used for consistent theming across the application.
+- **Web Components**: The Covalent components are built as web components, which means they can be used not only with Angular but also with other frameworks like React, Vue, or even plain JavaScript.
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+This app serves as a demo for integrating Covalent components to create a notebook-like experience within an Angular application. Since the Covalent components are web components, this functionality can be replicated in other frameworks as well.
